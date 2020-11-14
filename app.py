@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-from pottery import Ui_MainWindow  # импорт нашего сгенерированного файла
+from pottery import Ui_MainWindow  # imported ui
 import sys
 
 
