@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
                                        'pres_thick', 'pres_diam', 'latitude', 'longitude'])
             model = self.init_model()
             y_pred = model.predict(df)[0]
-            self.label_19.setText(names_all[int(y_pred)])
+            self.label_19.setText("{}\n{}".format("Prediction result:", names_all[int(y_pred)]))
         except Exception as e:
             print(e.__doc__)
             print(e.__str__())
