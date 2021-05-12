@@ -10,8 +10,9 @@
 import joblib
 import pandas as pd
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from ctglists import clf_lst, portion_lst, fabric_color_lst, names_all, name_mapping
+from ai2png import convert_ai_to_png
 
 
 class Ui_MainWindow(object):
@@ -141,6 +142,11 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab, "")
         self.pushButton_5.clicked.connect(self.predict_form)
         self.model = self.init_model()
+        self.dest_folder = ''
+        self.result_folder = ''
+        self.pushButton.clicked.connect(self.load_dest_folder)
+        self.pushButton_2.clicked.connect(self.load_result_folder)
+        self.pushButton_3.clicked.connect(self.convert_files)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -175,13 +181,17 @@ class Ui_MainWindow(object):
         self.comboBox_2.addItems(portion_lst)
         self.comboBox_3.addItems(fabric_color_lst)
 
-    def showDialog(self, msg):
+    def showDialog(self, msg, ifInfo=False):
         msgBox = QMessageBox()
-        msgBox.setIcon(QMessageBox.Critical)
+        if not ifInfo:
+            msgBox.setIcon(QMessageBox.Critical)
+            msgBox.setWindowTitle("Error")
+            msgBox.buttonClicked.connect(self.clear_controls)
+        else:
+            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setWindowTitle("Result")
         msgBox.setText(msg)
-        msgBox.setWindowTitle("Error")
         msgBox.setStandardButtons(QMessageBox.Ok)
-        msgBox.buttonClicked.connect(self.clear_controls)
 
         returnValue = msgBox.exec()
         if returnValue == QMessageBox.Ok:
@@ -217,4 +227,23 @@ class Ui_MainWindow(object):
         model = joblib.load("pottery_classifier.joblib.pkl")
         return model
 
+    def load_folder(self):
+        return QFileDialog.getExistingDirectory()
+
+    def load_dest_folder(self):
+        self.dest_folder = self.load_folder()
+        self.lineEdit_15.setText(self.dest_folder)
+
+    def load_result_folder(self):
+        self.result_folder = self.load_folder()
+        self.lineEdit_13.setText(self.result_folder)
+
+    def convert_files(self):
+        try:
+            convert_ai_to_png(self.dest_folder, self.result_folder)
+            self.showDialog("Result loaded to {}".format(self.result_folder), ifInfo=True)
+        except Exception as e:
+            print(e.__doc__)
+            print(e.__str__())
+            self.showDialog("{}\n{}".format(e.__doc__, e.__str__()))
 
