@@ -1,0 +1,1 @@
+%~dp0\potteryenv\Scripts\python.exe pottery.py
