@@ -1,4 +1,4 @@
-#!C:\Projects\pottery\potteryenv\Scripts\python.exe
+#!c:\projects\pottery\potteryenv\scripts\python.exe
 '''
 The MIT License (MIT)
 

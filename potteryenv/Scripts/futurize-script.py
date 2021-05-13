@@ -1,4 +1,4 @@
-#!C:\Projects\pottery\potteryenv\Scripts\python.exe
+#!c:\projects\pottery\potteryenv\scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'future==0.18.2','console_scripts','futurize'
 import re
 import sys
